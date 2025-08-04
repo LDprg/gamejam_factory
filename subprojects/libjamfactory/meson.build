@@ -1,6 +1,19 @@
 project('libjamfactory', 'cpp')
 
-inc = include_directories('include')
-libjamfactory = shared_library('jamfactory', include_directories: inc, install: true)
+spdlog_dep = dependency('spdlog')
 
-libjamfactory_dep = declare_dependency(include_directories: inc, link_with: libjamfactory)
+inc = include_directories('include')
+
+libjamfactory = library(
+  'jamfactory',
+  'src/logger.cpp',
+  include_directories: inc,
+  install: true,
+  dependencies: [spdlog_dep],
+)
+
+libjamfactory_dep = declare_dependency(
+  include_directories: inc,
+  dependencies: [spdlog_dep],
+  link_with: libjamfactory,
+)

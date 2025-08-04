@@ -1,16 +1,23 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <spdlog/spdlog.h>
 
-#include "const.hpp"
+#include <shared.hpp>
 
-int main() {
+Logger logger("Client");
+
+auto main() -> int {
+    logger.info("Staring...");
+
     auto window = sf::RenderWindow(sf::VideoMode({720u, 380u}), GAME_NAME);
     window.setFramerateLimit(144);
 
     auto circle = sf::CircleShape();
     circle.setRadius(10.f);
     circle.setFillColor(sf::Color::Green);
+
+    logger.info("Running...");
 
     while (window.isOpen()) {
         while (const std::optional event = window.pollEvent()) {
@@ -25,4 +32,5 @@ int main() {
 
         window.display();
     }
+    logger.info("Stopping...");
 }

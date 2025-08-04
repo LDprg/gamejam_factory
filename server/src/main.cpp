@@ -1,2 +1,10 @@
+#include "logger.hpp"
+#include <shared.hpp>
 
-int main() {}
+Logger logger("Server");
+
+auto main() -> int {
+    logger.info("Starting...");
+
+    logger.info("Stopping...");
+}
