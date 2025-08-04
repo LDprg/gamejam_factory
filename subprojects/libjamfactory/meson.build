@@ -10,6 +10,7 @@ libjamfactory = library(
   include_directories: inc,
   install: true,
   dependencies: [spdlog_dep],
+  cpp_pch: ['../../pch/pch.hpp', '../../pch/pch.cpp'],
 )
 
 libjamfactory_dep = declare_dependency(

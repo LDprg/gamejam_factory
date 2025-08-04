@@ -1,2 +1,12 @@
 CompileFlags:
   CompilationDatabase: build/
+
+If:
+  PathMatch: ./subprojects/libjamfactory/include/shared.hpp
+Index:
+  Background: Skip
+
+If:
+  PathMatch: ./pch/pch.hpp
+Index:
+  Background: Skip

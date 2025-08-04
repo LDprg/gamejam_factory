@@ -1,9 +1,5 @@
 #pragma once
 
-#include <memory>
-
-#include <spdlog/spdlog.h>
-
 class Logger {
   public:
     Logger(const std::string &name);
@@ -11,6 +7,14 @@ class Logger {
     template <typename... Args>
     void fatal(spdlog::format_string_t<Args...> fmt, Args &&...args) {
         this->logger->critical(fmt, args...);
+        this->logger->critical("Fatal error! Exiting...");
+        std::exit(EXIT_FAILURE);
+    }
+
+    template <typename... Args>
+    void critical(spdlog::format_string_t<Args...> fmt, Args &&...args) {
+        this->logger->critical(fmt, args...);
+        std::exit(EXIT_FAILURE);
     }
 
     template <typename... Args>

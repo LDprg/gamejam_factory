@@ -1,8 +1,3 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-
-#include <spdlog/spdlog.h>
-
 #include <shared.hpp>
 
 Logger logger("Client");
@@ -23,6 +18,10 @@ auto main() -> int {
     logger.info("Connecting...");
 
     sf::Socket::Status status = socket.connect(address, NETWORK_PORT);
+
+    if (status != sf::Socket::Status::Done) {
+        logger.fatal("Couldn't connect to Server!");
+    }
 
     logger.info("Running...");
 
