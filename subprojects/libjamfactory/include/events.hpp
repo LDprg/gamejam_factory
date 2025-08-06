@@ -1,16 +1,23 @@
 #pragma once
 
+#include "events_helpers.hpp"
+
 struct EventPlayerConnected {
     std::string name;
 };
 
-enum EventType { PlayerConnected };
+inline sf::Packet &operator<<(sf::Packet &packet,
+                              const EventPlayerConnected &m) {
+    return packet << m.name;
+}
 
-class Event {
-  public:
-    EventType type;
+inline sf::Packet &operator>>(sf::Packet &packet, EventPlayerConnected &m) {
+    return packet >> m.name;
+}
 
-    union {
-        EventPlayerConnected playerConnected;
-    };
-};
+struct EventPlayerReady : SignalEvent {};
+struct EventPlayerDisconncted : SignalEvent {};
+
+// Register new Events here
+typedef Events<EventPlayerConnected, EventPlayerReady, EventPlayerDisconncted>
+    Event;

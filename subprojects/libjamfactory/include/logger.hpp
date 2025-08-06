@@ -1,5 +1,8 @@
 #pragma once
 
+#include <spdlog/spdlog.h>
+#include <string>
+
 class Logger {
   public:
     Logger(const std::string &name);

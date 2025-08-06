@@ -1,4 +1,8 @@
-project('libjamfactory', 'cpp')
+project(
+  'libjamfactory',
+  'cpp',
+  meson_version: '>=0.50',
+)
 
 spdlog_dep = dependency('spdlog')
 

@@ -1,4 +1,8 @@
+#include "events.hpp"
+#include "pch/pch.hpp"
+
 #include <shared.hpp>
+#include <variant>
 
 Logger logger("Server");
 sf::TcpListener listener;
@@ -24,6 +28,20 @@ auto main() -> int {
         if (status == sf::Socket::Status::Error) {
             logger.err("Socket error!");
         }
+
+        Event ev;
+        packet >> ev;
+
+        std::visit(overloaded{
+                       [](EventPlayerConnected ev) {
+                           logger.warn("Player \"{}\" connected!", ev.name);
+                       },
+                       [](EventPlayerReady) { logger.warn("Player ready!"); },
+                       [](EventPlayerDisconncted) {
+                           logger.warn("Player disconnect!");
+                       },
+                   },
+                   ev);
 
         status = socket.receive(packet);
     }

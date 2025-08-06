@@ -1,5 +1,6 @@
 CompileFlags:
   CompilationDatabase: build/
+  Add: [-std=c++33]
 
 If:
   PathMatch: ./subprojects/libjamfactory/include/shared.hpp

@@ -1,3 +1,8 @@
+#include "events.hpp"
+#include "pch/pch.hpp"
+
+#include <SFML/Network/Packet.hpp>
+#include <SFML/Network/Socket.hpp>
 #include <shared.hpp>
 
 Logger logger("Client");
@@ -21,6 +26,22 @@ auto main() -> int {
 
     if (status != sf::Socket::Status::Done) {
         logger.fatal("Couldn't connect to Server!");
+    }
+
+    {
+        sf::Packet packet;
+        packet << Event{EventPlayerConnected{"Player1"}};
+        if (socket.send(packet) != sf::Socket::Status::Done) {
+            logger.fatal("Error registering to server!");
+        }
+    }
+
+    {
+        sf::Packet packet;
+        packet << Event{EventPlayerReady{}};
+        if (socket.send(packet) != sf::Socket::Status::Done) {
+            logger.fatal("Error registering to server!");
+        }
     }
 
     logger.info("Running...");

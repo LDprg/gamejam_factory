@@ -1,6 +1,11 @@
 #include <cstdlib>
+#include <functional>
 #include <iostream>
 #include <memory>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <variant>
 #include <vector>
 
 #include <spdlog/spdlog.h>
