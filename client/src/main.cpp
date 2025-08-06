@@ -10,7 +10,7 @@ Logger logger("Client");
 sf::IpAddress address = sf::IpAddress::LocalHost;
 sf::TcpSocket socket;
 
-auto main() -> int {
+int main() {
     logger.info("Staring...");
 
     auto window = sf::RenderWindow(sf::VideoMode({720u, 380u}), GAME_NAME);

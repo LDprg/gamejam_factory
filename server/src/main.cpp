@@ -8,7 +8,7 @@ Logger logger("Server");
 sf::TcpListener listener;
 sf::TcpSocket socket;
 
-auto main() -> int {
+int main() {
     logger.info("Starting...");
 
     if (listener.listen(NETWORK_PORT) != sf::Socket::Status::Done) {
