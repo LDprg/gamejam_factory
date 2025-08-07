@@ -43,6 +43,8 @@ int main() {
     logger->info("Waiting for connection...");
 
     networkThread.join();
+    
+    logger->info("Connected!");
 
     logger->info("Running...");
 
