@@ -1,3 +1,4 @@
+#include "event_manager.hpp"
 #include "events.hpp"
 #include "pch/pch.hpp"
 
@@ -24,6 +25,15 @@ int main() {
 
     sf::Packet packet;
     sf::Socket::Status status = socket.receive(packet);
+    // EventManager evt_mgr;
+    //
+    // evt_mgr.dispatch<EventPlayerConnected>([](const auto &ev) {
+    //     logger.warn("Player \"{}\" connected!", ev.name);
+    // });
+    //
+    // evt_mgr.dispatch<EventPlayerReady>(
+    //     [](const auto &) { logger.warn("Player ready!"); });
+
     while (status != sf::Socket::Status::Disconnected) {
         if (status == sf::Socket::Status::Error) {
             logger.err("Socket error!");
@@ -42,6 +52,7 @@ int main() {
                        },
                    },
                    ev);
+        // evt_mgr.handle(std::move(ev));
 
         status = socket.receive(packet);
     }

@@ -1,43 +1,41 @@
 #pragma once
 
 #include <spdlog/spdlog.h>
-#include <string>
 
 class Logger {
   public:
-    Logger(const std::string &name);
+    Logger(const char *name);
 
     template <typename... Args>
-    void fatal(spdlog::format_string_t<Args...> fmt, Args &&...args) {
+    void fatal(fmt::format_string<Args...> fmt, Args &&...args) {
         this->logger->critical(fmt, args...);
         this->logger->critical("Fatal error! Exiting...");
         std::exit(EXIT_FAILURE);
     }
 
     template <typename... Args>
-    void critical(spdlog::format_string_t<Args...> fmt, Args &&...args) {
-        this->logger->critical(fmt, args...);
-        std::exit(EXIT_FAILURE);
+    void critical(fmt::format_string<Args...> fmt, Args &&...args) {
+        this->logger->critical(fmt, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void err(spdlog::format_string_t<Args...> fmt, Args &&...args) {
-        this->logger->error(fmt, args...);
+    void err(fmt::format_string<Args...> fmt, Args &&...args) {
+        this->logger->error(fmt, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void warn(spdlog::format_string_t<Args...> fmt, Args &&...args) {
-        this->logger->warn(fmt, args...);
+    void warn(fmt::format_string<Args...> fmt, Args &&...args) {
+        this->logger->warn(fmt, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void info(spdlog::format_string_t<Args...> fmt, Args &&...args) {
-        this->logger->info(fmt, args...);
+    void info(fmt::format_string<Args...> fmt, Args &&...args) {
+        this->logger->info(fmt, std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    void trace(spdlog::format_string_t<Args...> fmt, Args &&...args) {
-        this->logger->trace(fmt, args...);
+    void trace(fmt::format_string<Args...> fmt, Args &&...args) {
+        this->logger->trace(fmt, std::forward<Args>(args)...);
     }
 
   protected:

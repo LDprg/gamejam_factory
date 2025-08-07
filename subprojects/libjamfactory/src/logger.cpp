@@ -4,6 +4,6 @@
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-Logger::Logger(const std::string &name) {
+Logger::Logger(const char *name) {
     this->logger = spdlog::stdout_color_mt(name);
 }

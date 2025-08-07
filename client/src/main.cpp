@@ -1,3 +1,4 @@
+#include "event_manager.hpp"
 #include "events.hpp"
 #include "pch/pch.hpp"
 
@@ -24,25 +25,23 @@ int main() {
 
     sf::Socket::Status status = socket.connect(address, NETWORK_PORT);
 
+    // EventManager evt_mgr;
+
     if (status != sf::Socket::Status::Done) {
         logger.fatal("Couldn't connect to Server!");
     }
 
-    {
-        sf::Packet packet;
-        packet << Event{EventPlayerConnected{"Player1"}};
-        if (socket.send(packet) != sf::Socket::Status::Done) {
-            logger.fatal("Error registering to server!");
-        }
+    // status = evt_mgr.send(socket, EventPlayerConnected{"Player1"});
+    sf::Packet packet;
+    packet << Event{EventPlayerConnected{"Player1"}};
+    if (socket.send(packet) != sf::Socket::Status::Done) {
+        logger.fatal("Error registering to server!");
     }
 
-    {
-        sf::Packet packet;
-        packet << Event{EventPlayerReady{}};
-        if (socket.send(packet) != sf::Socket::Status::Done) {
-            logger.fatal("Error registering to server!");
-        }
-    }
+    // status = evt_mgr.send(socket, EventPlayerReady{});
+    // if (status != sf::Socket::Status::Done) {
+    //     logger.fatal("Error registering to server!");
+    // }
 
     logger.info("Running...");
 
@@ -58,6 +57,7 @@ int main() {
         window.draw(circle);
 
         window.display();
+        window.close();
     }
     logger.info("Stopping...");
 }
