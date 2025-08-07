@@ -50,10 +50,10 @@ inline sf::Packet &operator<<(sf::Packet &packet, const Events<Ts...> &m) {
     return packet;
 }
 
-template <typename T, Sendable... Ts>
+template <Sendable T, Sendable... Ts>
 void check_event_package_type(sf::Packet &packet, Events<Ts...> &m,
                               const std::string &type) {
-    if (type == m.getTypeName()) {
+    if (type == type_name_v<T>) {
         T ev;
         packet >> ev;
         m = ev;
