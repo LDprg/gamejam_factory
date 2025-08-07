@@ -33,7 +33,7 @@ template <typename... Ts> struct overloaded : Ts... {
 template <Sendable... Ts> struct Events : std::variant<Ts...> {
     using std::variant<Ts...>::operator=;
 
-    std::string getTypeName() const {
+    [[nodiscard]] std::string getTypeName() const {
         return std::visit(
             overloaded{[](Ts) { return std::string(type_name_v<Ts>); }...},
             *this);

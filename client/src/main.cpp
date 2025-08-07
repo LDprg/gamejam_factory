@@ -1,18 +1,37 @@
 #include "event_manager.hpp"
 #include "events.hpp"
 #include "pch/pch.hpp"
+#include "threadpool.hpp"
 
 #include <SFML/Network/Packet.hpp>
 #include <SFML/Network/Socket.hpp>
+#include <memory>
 #include <shared.hpp>
 
-Logger logger("Client");
+std::shared_ptr<Logger> logger = std::make_shared<Logger>("Client");
 
 sf::IpAddress address = sf::IpAddress::LocalHost;
 sf::TcpSocket socket;
 
+EventManager evt_mgr(logger);
+
+// ERROR: currently not working
+// Threadpool thr_pool;
+
+void network() {
+    sf::Socket::Status status = socket.connect(address, NETWORK_PORT);
+
+    if (status != sf::Socket::Status::Done) {
+        logger->fatal("Couldn't connect to Server!");
+    }
+
+    evt_mgr.send(socket, EventPlayerConnected{"Player1"});
+    evt_mgr.send(socket, EventPlayerReady{});
+}
+
 int main() {
-    logger.info("Staring...");
+    logger->info("Staring...");
+    std::thread networkThread(network);
 
     auto window = sf::RenderWindow(sf::VideoMode({720u, 380u}), GAME_NAME);
     window.setFramerateLimit(144);
@@ -21,27 +40,11 @@ int main() {
     circle.setRadius(10.f);
     circle.setFillColor(sf::Color::Green);
 
-    logger.info("Connecting...");
+    logger->info("Waiting for connection...");
 
-    sf::Socket::Status status = socket.connect(address, NETWORK_PORT);
+    networkThread.join();
 
-    EventManager evt_mgr;
-
-    if (status != sf::Socket::Status::Done) {
-        logger.fatal("Couldn't connect to Server!");
-    }
-
-    status = evt_mgr.send(socket, EventPlayerConnected{"Player1"});
-    if (status != sf::Socket::Status::Done) {
-        logger.fatal("Error registering to server!");
-    }
-
-    status = evt_mgr.send(socket, EventPlayerReady{});
-    if (status != sf::Socket::Status::Done) {
-        logger.fatal("Error registering to server!");
-    }
-
-    logger.info("Running...");
+    logger->info("Running...");
 
     while (window.isOpen()) {
         while (const std::optional event = window.pollEvent()) {
@@ -57,5 +60,5 @@ int main() {
         window.display();
         window.close();
     }
-    logger.info("Stopping...");
+    logger->info("Stopping...");
 }
