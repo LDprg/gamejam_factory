@@ -25,23 +25,21 @@ int main() {
 
     sf::Socket::Status status = socket.connect(address, NETWORK_PORT);
 
-    // EventManager evt_mgr;
+    EventManager evt_mgr;
 
     if (status != sf::Socket::Status::Done) {
         logger.fatal("Couldn't connect to Server!");
     }
 
-    // status = evt_mgr.send(socket, EventPlayerConnected{"Player1"});
-    sf::Packet packet;
-    packet << Event{EventPlayerConnected{"Player1"}};
-    if (socket.send(packet) != sf::Socket::Status::Done) {
+    status = evt_mgr.send(socket, EventPlayerConnected{"Player1"});
+    if (status != sf::Socket::Status::Done) {
         logger.fatal("Error registering to server!");
     }
 
-    // status = evt_mgr.send(socket, EventPlayerReady{});
-    // if (status != sf::Socket::Status::Done) {
-    //     logger.fatal("Error registering to server!");
-    // }
+    status = evt_mgr.send(socket, EventPlayerReady{});
+    if (status != sf::Socket::Status::Done) {
+        logger.fatal("Error registering to server!");
+    }
 
     logger.info("Running...");
 

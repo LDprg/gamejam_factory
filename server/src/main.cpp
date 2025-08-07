@@ -25,14 +25,14 @@ int main() {
 
     sf::Packet packet;
     sf::Socket::Status status = socket.receive(packet);
-    // EventManager evt_mgr;
-    //
-    // evt_mgr.dispatch<EventPlayerConnected>([](const auto &ev) {
-    //     logger.warn("Player \"{}\" connected!", ev.name);
-    // });
-    //
-    // evt_mgr.dispatch<EventPlayerReady>(
-    //     [](const auto &) { logger.warn("Player ready!"); });
+    EventManager evt_mgr;
+
+    evt_mgr.dispatch<EventPlayerConnected>([](const auto &ev) {
+        logger.warn("Player \"{}\" connected!", ev.name);
+    });
+
+    evt_mgr.dispatch<EventPlayerReady>(
+        [](const auto &) { logger.warn("Player ready!"); });
 
     while (status != sf::Socket::Status::Disconnected) {
         if (status == sf::Socket::Status::Error) {
@@ -42,17 +42,7 @@ int main() {
         Event ev;
         packet >> ev;
 
-        std::visit(overloaded{
-                       [](EventPlayerConnected ev) {
-                           logger.warn("Player \"{}\" connected!", ev.name);
-                       },
-                       [](EventPlayerReady) { logger.warn("Player ready!"); },
-                       [](EventPlayerDisconncted) {
-                           logger.warn("Player disconnect!");
-                       },
-                   },
-                   ev);
-        // evt_mgr.handle(std::move(ev));
+        evt_mgr.handle(std::move(ev));
 
         status = socket.receive(packet);
     }
